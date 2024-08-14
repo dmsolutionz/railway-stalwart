@@ -13,15 +13,22 @@ RUN mkdir -p /opt/stalwart-mail/etc && \
     echo "default_language = \"en\"" >> /opt/stalwart-mail/etc/config.toml && \
     echo "" >> /opt/stalwart-mail/etc/config.toml && \
     echo "[storage]" >> /opt/stalwart-mail/etc/config.toml && \
-    echo "data = { type = \"sqlite\", path = \"/var/lib/stalwart-mail/data\" }" >> /opt/stalwart-mail/etc/config.toml && \
-    echo "lookup = { type = \"sqlite\", path = \"/var/lib/stalwart-mail/lookup\" }" >> /opt/stalwart-mail/etc/config.toml && \
+    echo "data = { type = \"sqlite\", path = \"/var/lib/stalwart-mail/data.db\" }" >> /opt/stalwart-mail/etc/config.toml && \
+    echo "lookup = { type = \"sqlite\", path = \"/var/lib/stalwart-mail/lookup.db\" }" >> /opt/stalwart-mail/etc/config.toml && \
     echo "blob = { type = \"fs\", path = \"/var/lib/stalwart-mail/blob\" }" >> /opt/stalwart-mail/etc/config.toml && \
-    echo "fts = { type = \"sqlite\", path = \"/var/lib/stalwart-mail/fts\" }" >> /opt/stalwart-mail/etc/config.toml && \
-    echo "directory = { type = \"sqlite\", path = \"/var/lib/stalwart-mail/directory\" }" >> /opt/stalwart-mail/etc/config.toml
+    echo "fts = { type = \"sqlite\", path = \"/var/lib/stalwart-mail/fts.db\" }" >> /opt/stalwart-mail/etc/config.toml && \
+    echo "directory = { type = \"sqlite\", path = \"/var/lib/stalwart-mail/directory.db\" }" >> /opt/stalwart-mail/etc/config.toml
+
+# Verify the configuration file
+RUN cat /opt/stalwart-mail/etc/config.toml
 
 # Add an echo command for logging
 RUN echo "Stalwart Mail Server is being set up..."
 
 # Use ENTRYPOINT with CMD to start the server correctly
 ENTRYPOINT ["/bin/sh", "-c"]
-CMD ["echo 'Starting Stalwart Mail Server...' && stalwart-mail -c /opt/stalwart-mail/etc/config.toml"]
+CMD ["echo 'Starting Stalwart Mail Server...' && \
+      echo 'Configuration:' && \
+      cat /opt/stalwart-mail/etc/config.toml && \
+      echo 'Starting server...' && \
+      stalwart-mail -c /opt/stalwart-mail/etc/config.toml"]
