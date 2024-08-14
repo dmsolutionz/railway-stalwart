@@ -11,4 +11,4 @@ RUN echo "Stalwart Mail Server is being set up..."
 
 # Use ENTRYPOINT with CMD to start the server correctly
 ENTRYPOINT ["/bin/sh", "-c"]
-CMD ["echo 'Starting Stalwart Mail Server...' && stalwart-mail -c /opt/stalwart-mail/etc/config.toml"]
+CMD ["echo 'Starting Stalwart Mail Server...' && stalwart-mail -c /var/lib/stalwart-mail/config.toml"]
